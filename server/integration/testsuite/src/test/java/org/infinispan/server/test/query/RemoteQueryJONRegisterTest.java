@@ -30,7 +30,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUC
  * @author William Burns
  */
 @RunWith(Arquillian.class)
-@WithRunningServer({@RunningServer(name = "remote-query")})
 public class RemoteQueryJONRegisterTest extends RemoteQueryTest {
 
    @Before
@@ -50,7 +49,7 @@ public class RemoteQueryJONRegisterTest extends RemoteQueryTest {
       ModelControllerClient client = ModelControllerClient.Factory.create(
             getServer().getHotrodEndpoint().getInetAddress().getHostName(), 9999);
 
-      ModelNode addProtobufFileOp = getOperation("local", "upload-proto-file", new ModelNode().add().set(
+      ModelNode addProtobufFileOp = getOperation("clustered", "upload-proto-file", new ModelNode().add().set(
             "proto-url", resource.toString()));
 
       ModelNode result = client.execute(addProtobufFileOp);

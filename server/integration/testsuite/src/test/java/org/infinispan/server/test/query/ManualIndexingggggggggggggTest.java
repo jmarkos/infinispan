@@ -1,18 +1,30 @@
 package org.infinispan.server.test.query;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.management.ObjectName;
 
 import org.infinispan.arquillian.core.InfinispanResource;
 import org.infinispan.arquillian.core.RemoteInfinispanServer;
+import org.infinispan.arquillian.core.RunningServer;
+import org.infinispan.arquillian.core.WithRunningServer;
+import org.infinispan.arquillian.utils.MBeanServerConnectionProvider;
 import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
+import org.infinispan.commons.util.Util;
 import org.infinispan.protostream.sampledomain.User;
+import org.infinispan.protostream.sampledomain.marshallers.MarshallerRegistration;
 import org.infinispan.query.dsl.QueryBuilder;
+import org.infinispan.server.test.util.RemoteCacheManagerFactory;
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.infinispan.server.test.util.TestUtil.invokeOperation;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -23,7 +35,7 @@ import static org.junit.Assert.assertEquals;
  *
  */
 @RunWith(Arquillian.class)
-public class ManualIndexingTest extends RemoteQueryBaseTest {
+public class ManualIndexingggggggggggggTest extends RemoteQueryBaseTest {
 
     private static final String CACHE_CONTAINER_NAME = "clustered";
     private static final String CACHE_NAME = "localtestcache_manual";
@@ -31,7 +43,7 @@ public class ManualIndexingTest extends RemoteQueryBaseTest {
     @InfinispanResource("remote-query-merged")
     private RemoteInfinispanServer server;
 
-    public ManualIndexingTest() {
+    public ManualIndexingggggggggggggTest() {
         super(CACHE_CONTAINER_NAME, CACHE_NAME);
     }
 
@@ -60,7 +72,6 @@ public class ManualIndexingTest extends RemoteQueryBaseTest {
                 + ",cache=" + ObjectName.quote(CACHE_NAME)
                 + ",component=MassIndexer");
         jmxConnectionProvider.getConnection().invoke(massIndexerName, "start", null, null);
-
         List<User> list = qb.build().list();
         assertEquals(1, list.size());
         User foundUser = list.get(0);

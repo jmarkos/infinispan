@@ -26,14 +26,13 @@ import static org.junit.Assert.assertNotNull;
  * @author Martin Gencur
  */
 @RunWith(Arquillian.class)
-@WithRunningServer({@RunningServer(name = "remote-query")})
 public class RemoteQueryTest extends RemoteQueryBaseTest {
 
-    @InfinispanResource("remote-query")
+    @InfinispanResource("remote-query-merged")
     protected RemoteInfinispanServer server;
 
     public RemoteQueryTest() {
-        super("local", "testcache");
+        super("clustered", "localtestcache");
     }
 
     protected RemoteQueryTest(String cacheContainerName, String cacheName) {

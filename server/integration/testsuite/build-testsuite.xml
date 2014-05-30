@@ -187,6 +187,9 @@
         <transform in="standalone.xml" out="testsuite/standalone-with-indexing.xml" modifyInfinispan="${infinispan.parts}/indexing.xml"/>
         <transform in="clustered.xml" out="testsuite/distributed-with-indexing.xml" modifyInfinispan="${infinispan.parts}/indexing-distributed.xml" filtering="true"/>
         <transform in="clustered.xml" out="testsuite/clustered-with-indexing.xml" modifyInfinispan="${infinispan.parts}/indexing-clustered.xml" filtering="true"/>
+        <transform in="clustered.xml" out="testsuite/clustered-indexing-merged.xml"
+                   modifyInfinispan="${infinispan.parts}/indexing-merged.xml"
+                   filtering="true"/>
         <transform in="standalone.xml" out="testsuite/standalone-leveldb-local.xml" modifyInfinispan="${infinispan.parts}/leveldb-local.xml" filtering="true"/>
         <transform in="clustered.xml" out="testsuite/clustered-leveldb-dist.xml" modifyInfinispan="${infinispan.parts}/leveldb-dist.xml" filtering="true"/>
         <transform in="clustered.xml" out="testsuite/clustered-leveldb-repl.xml" modifyInfinispan="${infinispan.parts}/leveldb-repl.xml" filtering="true"/>

@@ -19,14 +19,13 @@ import static org.junit.Assert.*;
  * @author anistor@redhat.com
  */
 @RunWith(Arquillian.class)
-@WithRunningServer({@RunningServer(name = "remote-query-keySet")})
 public class RemoteQueryKeySetTest extends RemoteQueryBaseTest {
 
-   @InfinispanResource("remote-query-keySet")
+   @InfinispanResource("remote-query-merged")
    protected RemoteInfinispanServer server;
 
    public RemoteQueryKeySetTest() {
-      super("clustered", "testcache");
+      super("clustered", "disttestcache");
    }
 
    @Override
