@@ -1,14 +1,14 @@
 package org.infinispan.remoting.transport.jgroups;
 
-import org.infinispan.commons.marshall.InstanceReusingAdvancedExternalizer;
-import org.infinispan.commons.util.Util;
-import org.infinispan.marshall.core.Ids;
-import org.infinispan.remoting.transport.Address;
-
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Set;
+
+import org.infinispan.commons.marshall.InstanceReusingAdvancedExternalizer;
+import org.infinispan.commons.util.Util;
+import org.infinispan.marshall.core.Ids;
+import org.infinispan.remoting.transport.Address;
 
 /**
  * An encapsulation of a JGroups Address
@@ -77,7 +77,7 @@ public class JGroupsAddress implements Address {
       public JGroupsAddress doReadObject(ObjectInput unmarshaller) throws IOException, ClassNotFoundException {
          try {
             org.jgroups.Address address = org.jgroups.util.Util.readAddress(unmarshaller);
-            return (JGroupsAddress) JGroupsAddressCache.fromJGroupsAddress(address);
+            return new JGroupsAddress(address);
          } catch (Exception e) {
             throw new IOException(e);
          }

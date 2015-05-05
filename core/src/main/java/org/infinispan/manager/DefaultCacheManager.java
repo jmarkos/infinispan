@@ -1,5 +1,19 @@
 package org.infinispan.manager;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.infinispan.Cache;
 import org.infinispan.IllegalLifecycleStateException;
 import org.infinispan.Version;
@@ -52,20 +66,6 @@ import org.infinispan.util.CyclicDependencyException;
 import org.infinispan.util.DependencyGraph;
 import org.infinispan.util.logging.Log;
 import org.infinispan.util.logging.LogFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A <tt>CacheManager</tt> is the primary mechanism for retrieving a {@link Cache} instance, and is often used as a
@@ -632,9 +632,8 @@ public class DefaultCacheManager implements EmbeddedCacheManager {
    }
 
    private void terminate(String cacheName) {
-      CacheWrapper cacheWrapper = this.caches.get(cacheName);
-      if (cacheWrapper != null && cacheWrapper.cache != null) {
-         Cache<?, ?> cache = cacheWrapper.cache;
+      if (cacheExists(cacheName)) {
+         Cache<?, ?> cache = this.caches.get(cacheName).cache;
          unregisterCacheMBean(cache);
          cache.stop();
       }
