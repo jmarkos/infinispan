@@ -129,7 +129,7 @@ public class InboundTransferTask {
       if (!isCancelled && isStarted.compareAndSet(false, true)) {
          Set<Integer> segmentsCopy = getSegments();
          if (segmentsCopy.isEmpty()) {
-            log.tracef("Segments list is empty, skipping source %s", source);
+            log.debugf("Segments list is empty, skipping source %s", source);
             return true;
          }
          if (trace) {
@@ -148,7 +148,7 @@ public class InboundTransferTask {
                return true;
             }
             log.failedToRequestSegments(segmentsCopy, cacheName, source, new CacheException(String.valueOf(response)));
-         } catch (Exception e) {
+         } catch (CacheException e) {
             log.failedToRequestSegments(segmentsCopy, cacheName, source, e);
          }
          return false;
@@ -187,7 +187,7 @@ public class InboundTransferTask {
       sendCancelCommand(cancelledSegments);
 
       if (isCancelled) {
-         notifyCompletion(false);
+         notifyCompletion();
       }
    }
 
@@ -202,7 +202,7 @@ public class InboundTransferTask {
 
          sendCancelCommand(segmentsCopy);
 
-         notifyCompletion(false);
+         notifyCompletion();
       }
    }
 
@@ -236,15 +236,15 @@ public class InboundTransferTask {
             }
          }
          if (isCompleted) {
-            notifyCompletion(true);
+            notifyCompletion();
          }
       }
    }
 
-   private void notifyCompletion(boolean success) {
-      isCompletedSuccessfully = success;
-      completionLatch.countDown();
+   private void notifyCompletion() {
+      isCompletedSuccessfully = true;
       stateConsumer.onTaskCompletion(this);
+      completionLatch.countDown();
    }
 
    /**
@@ -261,16 +261,12 @@ public class InboundTransferTask {
       return isCompletedSuccessfully;
    }
 
-   public boolean isCompletedSuccessfully() {
-      return isCompletedSuccessfully;
-   }
-
    /**
     * Terminate abruptly regardless if the segments were received or not. This is used when the source node
     * is no longer alive.
     */
    public void terminate() {
-      notifyCompletion(false);
+      completionLatch.countDown();
    }
 
    @Override
